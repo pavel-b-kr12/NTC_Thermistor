@@ -10,7 +10,9 @@ NTC_Thermistor::NTC_Thermistor(
 	const double nominalResistance,
 	const double nominalTemperatureCelsius,
 	const double bValue,
-	const int adcResolution
+	const int adcResolution,
+	const float ADC_ref_v,
+	const bool bPullupSchematics	
 ) {
 	pinMode(this->pin = pin, INPUT);
 	this->referenceResistance = referenceResistance;
@@ -18,6 +20,9 @@ NTC_Thermistor::NTC_Thermistor(
 	this->nominalTemperature = celsiusToKelvins(nominalTemperatureCelsius);
 	this->bValue = bValue;
 	this->adcResolution = max(adcResolution, 0);
+	this->ADC_ref_v = ADC_ref_v;
+	this->bPullupSchematics = bPullupSchematics;
+	
 }
 
 /**
@@ -60,7 +65,14 @@ inline double NTC_Thermistor::resistanceToKelvins(const double resistance) {
 }
 
 inline double NTC_Thermistor::readResistance() {
-	return this->referenceResistance / (this->adcResolution / readVoltage() - 1);
+	if(bPullupSchematics)
+		return this->referenceResistance / (this->adcResolution / readVoltage() - 1);
+	else
+	{
+		double r1 = ( (5*this->referenceResistance * this->adcResolution)
+		/ (readVoltage() * ADC_ref_v) ) - this->referenceResistance;
+		return r1;
+	}
 }
 
 inline double NTC_Thermistor::readVoltage() {

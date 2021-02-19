@@ -1,4 +1,4 @@
-# NTC Thermistor Library
+# NTC Thermistor Library (fork with optional ADC_ref_v, bPULL_UP_schematics)
 
 For Arduino ant STM32 boards.
 
@@ -7,16 +7,15 @@ Provides a temperature reading in Celsius, Fahrenheit and Kelvin.
 
 ## Installation
 
-1. [Download](https://github.com/YuriiSalimov/NTC_Thermistor/releases) the Latest release from gitHub.
-2. Unzip and modify the Folder name to "NTC_Thermistor" (Remove the '-version')
-3. Paste the modified folder on your Library folder (On your `libraries` folder inside Sketchbooks or Arduino software).
-4. Restart the Arduino IDE.
-
+1. [Download](https://github.com/pavel-b-kr12/NTC_Thermistor/archive/master.zip)
+3. Paste to Library folder, replacing original lib, if it is here
+4. Use new constructor method as described below
 ## Circuit Diagram
 
 Connect to the analog side of an Arduino Uno. Run 5V through the thermistor, then a pull-down resistor (R0), and into ground. To measure the temperature pull a line off the junction of the thermistor and the resistor, and into an analog pin (A1 here).
 
 ![Diagram](Diagram.png)
+![Diagram](Diagram_pull_dn.png)
 
 ## Methods
 
@@ -28,8 +27,12 @@ Connect to the analog side of an Arduino Uno. Run 5V through the thermistor, the
         Rn - nominal resistance.
         Tn - nominal temperature in Celsius.
         B - b-value of a thermistor.
+		optional:
+		ADC_resolution = 1023 default
+		ADC_ref_v = 5 default
+		bPULL_UP_schematics = true for schematics as on image, or false for thermistor with pulldown resistor
     */
-    NTC_Thermistor thermistor(pin, R0, Rn, Tn, B);
+    NTC_Thermistor thermistor(pin, R0, Rn, Tn, B, ADC_resolution, ADC_ref_v, bPULL_UP_schematics);
 
     // Read a temperature in Celsius.
     double celsius = thermistor.readCelsius();

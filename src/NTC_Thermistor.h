@@ -54,6 +54,8 @@ class NTC_Thermistor : public Thermistor {
     double nominalTemperature; // in Celsius.
     double bValue;
     int adcResolution;
+    float ADC_ref_v;
+	bool bPullupSchematics;
 
   public:
     /**
@@ -72,7 +74,9 @@ class NTC_Thermistor : public Thermistor {
       double nominalResistance,
       double nominalTemperatureCelsius,
       double bValue,
-      int adcResolution = DEFAULT_ADC_RESOLUTION
+      int adcResolution = DEFAULT_ADC_RESOLUTION,
+	  float ADC_ref_v=5,
+	  bool bPullupSchematics=true
     );
 
     /**
